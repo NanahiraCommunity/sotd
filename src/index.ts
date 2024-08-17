@@ -165,7 +165,7 @@ function reparseHistory() {
   queueSave();
 }
 
-reparseHistory();
+// reparseHistory();
 
 async function readHistory() {
   let g = await client.guilds.fetch(config.nanacord);
