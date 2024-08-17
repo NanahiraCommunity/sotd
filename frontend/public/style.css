@@ -1,0 +1,53 @@
+html {
+	font-family: sans-serif;
+}
+
+body {
+	max-width: 800px;
+	margin: 1em auto;
+}
+
+iframe.youtube, .youtube-embed-placeholder {
+	max-width: 800px;
+	max-height: 450px;
+	width: 100vw;
+	height: 57vw;
+}
+
+.youtube-embed-placeholder {
+	height: 100px;
+	text-align: center;
+	background-color: #ddd;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.youtube-embed-placeholder p {
+	grid-column: 1 / span 2;
+	margin-bottom: 0;
+}
+
+.youtube-embed-placeholder button {
+	grid-row: 2;
+	display: block;
+	width: 25%;
+	justify-self: start;
+}
+
+.youtube-embed-placeholder button:nth-child(2) {
+	justify-self: end;
+}
+
+article {
+	margin: 1em;
+	border-top: 1px solid gray;
+}
+
+.author:before {
+	content: "- ";
+	display: inline;
+}

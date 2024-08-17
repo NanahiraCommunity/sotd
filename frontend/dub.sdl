@@ -1,0 +1,5 @@
+name "frontend"
+description "A simple vibe.d server application."
+authors "webfreak"
+license "proprietary"
+dependency "vibe-d" version="~>0.9"

@@ -1,0 +1,68 @@
+doctype html
+
+- import utils;
+- import std.datetime.date;
+- import std.conv : text;
+
+- const authors = [
+- 	"206177682780585984": "Ungrave",
+- 	"261134314454908929": "Sp3000",
+- 	"299774886916653056": "lightbulbMEOW",
+- 	"452418741096022018": "saburou",
+- 	"740849229588725760": "ApG77",
+- 	"919992758922526740": "azunyan"
+- ];
+
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible", content="ie=edge")
+		title Nanahira Song of the Day
+		link(rel="stylesheet", href="public/style.css")
+	body
+		- auto latest = history[$ - 1];
+		- auto latestDate = cast(Date) fromUnixTime(latest.dt);
+		- if (latestDate == today || latestDate == yesterday)
+			h1 Nanahira Song of the Day (#{latestDate})
+			- if (latest.parsed.youtube.length)
+				iframe.youtube(data-url=latest.parsed.youtube.makeYTEmbed, frameborder="0", allow="autoplay; encrypted-media", allowfullscreen)
+		- else
+			h1 Nanahira Song of the Day (#{today})
+			p No Song of the Day has been posted since yesterday.
+
+		- foreach_reverse (i, entry; history)
+			- auto date = cast(Date) fromUnixTime(entry.dt);
+			- auto label = text("#", entry.parsed.counter, " - ", entry.parsed.name);
+
+			article.entry(class="#{date == latestDate ? `latest` : ``}")
+				h2
+					a(name="sotd-#{entry.parsed.counter}", href=entry.parsed.youtube)= label.stripMD
+				div.date= date
+				- if (entry.parsed.source.length)
+					div.source= entry.parsed.source.stripMD
+				- if (entry.parsed.releaseDate.length)
+					div.release-date
+						b Release Date:
+						|= entry.parsed.releaseDate.stripMD
+				- if (entry.parsed.composer.length)
+					div.composer
+						b Composer:
+						|= entry.parsed.composer.stripMD
+				- if (entry.parsed.singers.length)
+					div.singers
+						b Singers:
+						|= entry.parsed.singers.stripMD
+				- if (entry.parsed.links.length)
+					div.links
+						b Links:
+						|!= entry.parsed.links.filterMarkdown
+				- if (entry.parsed.lyrics.length)
+					div.lyrics
+						b Lyrics:
+						|!= entry.parsed.lyrics.filterMarkdown
+				- if (entry.parsed.description.length)
+					div.description!= entry.parsed.description.filterMarkdown
+				div.author= authors.get(entry.author, "unknown author")
+
+		script(src="public/yt-privacy.js")
