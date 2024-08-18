@@ -21,6 +21,9 @@ html(lang="en")
 			h1 Nanahira Song of the Day (#{today})
 			p No Song of the Day has been posted since yesterday.
 
+		p.ytpl
+			a(href="https://www.youtube.com/playlist?list=PLIcvy6G8SoBubOMoP0fKIJKJLD3CxDdqj") YouTube Playlist
+
 		- foreach_reverse (i, entry; history)
 			- auto date = entry.date;
 			- auto label = text("#", entry.parsed.counter, " - ", entry.parsed.name);
