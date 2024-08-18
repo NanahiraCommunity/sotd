@@ -16,3 +16,4 @@ frontend-test-*
 *.lst
 public/emojis/*.gif
 public/emojis/*.webp
+public/thumbnails/*.jpg

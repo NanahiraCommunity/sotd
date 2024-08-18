@@ -38,22 +38,28 @@ SysTime fromUnixTime(ulong t)
 static immutable ytShortId = ctRegex!`\b[A-Za-z0-9_-]+$`;
 static immutable ytLongId = ctRegex!`[?&]v=([A-Za-z0-9_-]+)`;
 
-string makeYTEmbed(string youtubeLink)
+string extractYTID(string youtubeLink)
 {
 	if (youtubeLink.canFind("://youtu.be/"))
 	{
 		auto m = youtubeLink.matchFirst(ytShortId);
 		if (!m)
 			return null;
-		return "https://www.youtube.com/embed/" ~ m[0];
+		return m[0];
 	}
 	else
 	{
 		auto m = youtubeLink.matchFirst(ytLongId);
 		if (!m)
 			return null;
-		return "https://www.youtube.com/embed/" ~ m[1];
+		return m[1];
 	}
+}
+
+string makeYTEmbed(string youtubeLink)
+{
+	auto id = extractYTID(youtubeLink);
+	return id.length ? "https://www.youtube.com/embed/" ~ id : null;
 }
 
 static immutable emojiRegex = ctRegex!`<a href="#">(a?):([^:<&]+):(\d+)</a>`;

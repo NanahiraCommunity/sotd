@@ -1,7 +1,6 @@
 doctype html
 
 - import utils;
-- import std.datetime.date;
 - import std.conv : text;
 
 html(lang="en")
@@ -13,7 +12,7 @@ html(lang="en")
 		link(rel="stylesheet", href="public/style.css")
 	body
 		- auto latest = history[$ - 1];
-		- auto latestDate = cast(Date) fromUnixTime(latest.dt);
+		- auto latestDate = latest.date;
 		- if (latestDate == today || latestDate == yesterday)
 			h1 Nanahira Song of the Day (#{latestDate})
 			- if (latest.parsed.youtube.length)
@@ -23,7 +22,7 @@ html(lang="en")
 			p No Song of the Day has been posted since yesterday.
 
 		- foreach_reverse (i, entry; history)
-			- auto date = cast(Date) fromUnixTime(entry.dt);
+			- auto date = entry.date;
 			- auto label = text("#", entry.parsed.counter, " - ", entry.parsed.name);
 
 			article.entry(class="#{date == latestDate ? `latest` : ``}")
