@@ -54,6 +54,6 @@ html(lang="en")
 						|!= entry.parsed.lyrics.filterMarkdown
 				- if (entry.parsed.description.length)
 					div.description!= entry.parsed.description.filterMarkdown
-				div.author= entry.author
+				div.author #{entry.author} - #[a(href=entry.url) view on Discord]
 
 		script(src="public/yt-privacy.js")

@@ -48,6 +48,7 @@ History[] history()
 struct History
 {
 	ulong dt;
+	string url;
 	string author;
 	string raw;
 	SotdMessage parsed;
