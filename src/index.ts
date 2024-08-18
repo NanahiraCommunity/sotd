@@ -12,9 +12,9 @@ import {
 import * as fs from "fs";
 
 const config = require("../config.json");
-const token = fs.readFileSync("token").toString("utf-8");
+const token = fs.readFileSync("token").toString("utf-8").trim();
 const history: HistoryEntry[] = JSON.parse(
-  fs.readFileSync("history.json").toString("utf-8")
+  fs.readFileSync("history.json").toString("utf-8").trim()
 );
 if (!Array.isArray(history)) throw new Error("history.json is not an array!");
 
