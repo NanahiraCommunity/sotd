@@ -100,7 +100,10 @@ async function onMessageSendOrEdit(
 
   let parsed = parseSotdMessage(msg.content);
 
-  if (!parsed) return MessageState.unparsable;
+  if (!parsed) {
+    await msg.react(config.fail_reaction);
+    return MessageState.unparsable;
+  }
 
   let o: HistoryEntry = {
     dt: msg.createdTimestamp,
