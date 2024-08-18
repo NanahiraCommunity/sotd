@@ -2,6 +2,8 @@ import std.datetime.systime;
 import utils;
 import vibe.vibe;
 
+@safe:
+
 static immutable configPath = NativePath("../history.json");
 
 void main()
@@ -54,7 +56,8 @@ void latestEmbed(scope HTTPServerRequest req, scope HTTPServerResponse res)
 			thumbnail = "https://sotd.nanahira.community/" ~ file
 				.toNativeString;
 		}
-		res.writeBody(format!`<h3>SOTD #%s - %s</h3><a href="%s"><img class="thumbnail" src="%s" alt="%s"></a>`(
+		res.writeBody(format!`<h3>SOTD %s / #%s - %s</h3><a href="%s"><img class="thumbnail" src="%s" alt="%s"></a>`(
+				latest.date,
 				latest.parsed.counter,
 				latest.parsed.name,
 				latest.parsed.youtube,

@@ -1,5 +1,7 @@
 module utils;
 
+@safe:
+
 import std.algorithm;
 import std.datetime.systime;
 import std.datetime.timezone;
