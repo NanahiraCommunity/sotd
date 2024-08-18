@@ -31,6 +31,8 @@ client.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
+client.on(Events.MessageBulkDelete, (msgs) => msgs.each(onMessageDelete));
+client.on(Events.MessageDelete, onMessageDelete);
 client.on(Events.MessageCreate, onMessageSendOrEdit);
 client.on(Events.MessageUpdate, onMessageSendOrEdit);
 
@@ -50,6 +52,34 @@ enum MessageState {
   unparsable,
   added,
   updated,
+}
+
+async function onMessageDelete(msg: Message | PartialMessage) {
+  let url: string;
+  try {
+    url = msg.url;
+  } catch (e) {
+    console.error("ignoring deleted message that we can't fetch");
+    return;
+  }
+
+  let i = history.findIndex((h) => h.url == url);
+  if (i !== -1) {
+    const deleted = history[i];
+    console.log("Deleting entry ", deleted);
+    history.splice(i, 1);
+    queueSave();
+
+    try {
+      fs.appendFile(
+        "_deleted_history.json",
+        new Date().toISOString() + " - " + JSON.stringify(deleted) + "\n",
+        (e) => {
+          if (e) console.error("Failed writing deleted entry: ", e);
+        }
+      );
+    } catch (e) {}
+  }
 }
 
 async function onMessageSendOrEdit(
@@ -153,7 +183,9 @@ function queueSave() {
   function saveImpl() {
     history.sort((a, b) => a.dt - b.dt);
 
-    fs.writeFileSync("history.json", JSON.stringify(history, null, "\t"));
+    fs.writeFile("history.json", JSON.stringify(history, null, "\t"), (e) => {
+      if (e) console.error("Failed writing history: ", e);
+    });
   }
 
   clearTimeout(_saveTimer);
