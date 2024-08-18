@@ -40,6 +40,7 @@ type HistoryEntry = {
   dt: number;
   url: string;
   author: string;
+  author_id: string;
   raw: string;
   parsed: SotdMessage;
 };
@@ -75,6 +76,7 @@ async function onMessageSendOrEdit(
     dt: msg.createdTimestamp,
     url: msg.url,
     author: msg.author.displayName,
+    author_id: msg.author.id,
     raw: msg.content,
     parsed,
   };
@@ -82,7 +84,7 @@ async function onMessageSendOrEdit(
   let existing = history.findIndex(
     (h) =>
       (h.parsed.counter === o.parsed.counter || h.url == o.url) &&
-      h.author == o.author
+      h.author_id == o.author_id
   );
   if (existing != -1) history[existing] = o;
   else {
