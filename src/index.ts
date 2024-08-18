@@ -38,6 +38,7 @@ client.login(token);
 
 type HistoryEntry = {
   dt: number;
+  url: string;
   author: string;
   raw: string;
   parsed: SotdMessage;
@@ -70,16 +71,17 @@ async function onMessageSendOrEdit(
 
   if (!parsed) return MessageState.unparsable;
 
-  let o = {
+  let o: HistoryEntry = {
     dt: msg.createdTimestamp,
-    author: msg.author.id,
+    url: msg.url,
+    author: msg.author.displayName,
     raw: msg.content,
     parsed,
   };
 
   let existing = history.findIndex(
     (h) =>
-      (h.parsed.counter === o.parsed.counter || h.dt == o.dt) &&
+      (h.parsed.counter === o.parsed.counter || h.url == o.url) &&
       h.author == o.author
   );
   if (existing != -1) history[existing] = o;

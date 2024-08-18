@@ -4,15 +4,6 @@ doctype html
 - import std.datetime.date;
 - import std.conv : text;
 
-- const authors = [
-- 	"206177682780585984": "Ungrave",
-- 	"261134314454908929": "Sp3000",
-- 	"299774886916653056": "lightbulbMEOW",
-- 	"452418741096022018": "saburou",
-- 	"740849229588725760": "ApG77",
-- 	"919992758922526740": "azunyan"
-- ];
-
 html(lang="en")
 	head
 		meta(charset="UTF-8")
@@ -63,6 +54,6 @@ html(lang="en")
 						|!= entry.parsed.lyrics.filterMarkdown
 				- if (entry.parsed.description.length)
 					div.description!= entry.parsed.description.filterMarkdown
-				div.author= authors.get(entry.author, "unknown author")
+				div.author= entry.author
 
 		script(src="public/yt-privacy.js")
