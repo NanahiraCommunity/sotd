@@ -37,7 +37,7 @@ SysTime fromUnixTime(ulong t)
 	return SysTime.fromUnixTime(t / 1000, JST);
 }
 
-static immutable ytShortId = ctRegex!`/\b([A-Za-z0-9_-]+)`;
+static immutable ytShortId = ctRegex!`youtu\.be/\b([A-Za-z0-9_-]+)`;
 static immutable ytLongId = ctRegex!`[?&]v=([A-Za-z0-9_-]+)`;
 
 string extractYTID(string youtubeLink)
