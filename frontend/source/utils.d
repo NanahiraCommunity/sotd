@@ -37,25 +37,15 @@ SysTime fromUnixTime(ulong t)
 	return SysTime.fromUnixTime(t / 1000, JST);
 }
 
-static immutable ytShortId = ctRegex!`\b[A-Za-z0-9_-]+$`;
+static immutable ytShortId = ctRegex!`/\b([A-Za-z0-9_-]+)`;
 static immutable ytLongId = ctRegex!`[?&]v=([A-Za-z0-9_-]+)`;
 
 string extractYTID(string youtubeLink)
 {
-	if (youtubeLink.canFind("://youtu.be/"))
-	{
-		auto m = youtubeLink.matchFirst(ytShortId);
-		if (!m)
-			return null;
-		return m[0];
-	}
-	else
-	{
-		auto m = youtubeLink.matchFirst(ytLongId);
-		if (!m)
-			return null;
-		return m[1];
-	}
+	auto m = youtubeLink.matchFirst(youtubeLink.canFind("://youtu.be/") ? ytShortId : ytLongId);
+	if (!m)
+		return null;
+	return m[1];
 }
 
 string makeYTEmbed(string youtubeLink)
