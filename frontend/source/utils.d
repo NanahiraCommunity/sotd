@@ -18,9 +18,9 @@ static immutable htmlRegex = ctRegex!`<.*?>`;
 string stripMD(string text)
 {
 	// XXX: this method is ugly quickly written hack
-	import vibe.textfilter.markdown : filterMarkdown;
+	import vibe.textfilter.markdown : filterMarkdown, MarkdownFlags;
 
-	auto res = filterMarkdown(text);
+	auto res = filterMarkdown(text, MarkdownFlags.noInlineHtml);
 
 	return res.replaceAll(htmlRegex, "");
 }
@@ -57,9 +57,10 @@ string makeYTEmbed(string youtubeLink)
 static immutable emojiRegex = ctRegex!`<a href="#">(a?):([^:<&]+):(\d+)</a>`;
 string filterMarkdown(string md)
 {
-	import vibe.textfilter.markdown : filterMarkdown;
+	import vibe.textfilter.markdown : filterMarkdown, MarkdownFlags;
 
-	auto res = filterMarkdown(md);
+	auto res = filterMarkdown(md, MarkdownFlags.backtickCodeBlocks | MarkdownFlags
+			.keepLineBreaks | MarkdownFlags.noInlineHtml);
 
 	string embedEmoji(Captures!string m)
 	{
@@ -71,7 +72,8 @@ string filterMarkdown(string md)
 
 		auto url = `https://cdn.discordapp.com/emojis/` ~ filename ~ `?size=96&quality=lossless`;
 
-		ensureFileCached(NativePath("public/emojis/") ~ NativePath.Segment(filename), URL(url));
+		ensureFileCached(NativePath("public/emojis/") ~ NativePath.Segment(filename), URL(
+				url));
 
 		return `<img class="emoji" height="20" src="/public/emojis/` ~ filename ~ `" title=":` ~ name ~ `:" alt=":` ~ name ~ `:" />`;
 	}
