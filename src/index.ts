@@ -98,6 +98,8 @@ async function onMessageSendOrEdit(
   if (!msg.mentions.has(client.user!.id) && !msg.mentions.has(config.role))
     return MessageState.uninterested;
 
+  msg = await msg.fetch();
+
   let parsed = parseSotdMessage(msg.content);
 
   if (!parsed) {
@@ -119,9 +121,13 @@ async function onMessageSendOrEdit(
       (h.parsed.counter === o.parsed.counter || h.url == o.url) &&
       h.author_id == o.author_id
   );
-  if (existing != -1) history[existing] = o;
+  if (existing != -1) {
+    history[existing] = o;
+    console.log("Updating history entry #" + o.parsed.counter, JSON.stringify(o));
+  }
   else {
     history.push(o);
+    console.log("Pushed entry #" + o.parsed.counter, JSON.stringify(o));
 
     await msg.react(config.reaction);
   }
